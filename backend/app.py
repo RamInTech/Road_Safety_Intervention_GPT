@@ -1,6 +1,4 @@
-# ==============================================
-# Road Safety Intervention GPT - FastAPI Backend
-# ==============================================
+
 
 import json
 import os
@@ -16,9 +14,7 @@ from langchain_community.vectorstores import FAISS
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
 
 
-# ==============================================
-# Initialize FastAPI
-# ==============================================
+
 app = FastAPI(
     title="Road Safety Intervention GPT API",
     description="RAG-powered backend using IRC standards",
@@ -34,9 +30,7 @@ app.add_middleware(
 )
 
 
-# ==============================================
-# Load Knowledge Base
-# ==============================================
+
 FILE_PATH = "knowledge_base.json"
 
 with open(FILE_PATH, "r", encoding="utf-8") as f:
@@ -61,16 +55,11 @@ for txt, meta in zip(all_texts, all_metadata):
         chunk_meta.append(meta)
 
 
-# ==============================================
-# Embedding + Vector Store
-# ==============================================
 embeddings = SentenceTransformerEmbeddings(model_name='BAAI/bge-large-en-v1.5')
 vector_store = FAISS.from_texts(chunks, embeddings, metadatas=chunk_meta)
 
 
-# ==============================================
-# Load Llama Model
-# ==============================================
+
 HF_TOKEN = os.getenv("HF_TOKEN")
 
 if not HF_TOKEN:
@@ -96,9 +85,7 @@ llm_generator = pipeline(
 )
 
 
-# ==============================================
-# Intent Detection
-# ==============================================
+
 def detect_intent(query: str):
     q = query.lower()
     if "cost" in q or "price" in q or "estimate" in q:
